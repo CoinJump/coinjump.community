@@ -40,17 +40,13 @@ class updateAvailableCoins extends Command
             $ticker = strtoupper($data['ticker']);
             $name = $data['name'];
 
-            // Only work with coins < 200 rank
-            // This removes all little coins
-            if ($data['rank'] <= 200) {
-                // Does it already exist?
-                $existingCoin = Coin::where('name', $ticker)->first();
-                if (!is_a($existingCoin, 'App\Coin')) {
-                    $newCoin = new Coin();
-                    $newCoin->name = $ticker;
-                    $newCoin->long_name = $name;
-                    $newCoin->save();
-                }
+            // Does it already exist?
+            $existingCoin = Coin::where('name', $ticker)->first();
+            if (!is_a($existingCoin, 'App\Coin')) {
+                $newCoin = new Coin();
+                $newCoin->name = $ticker;
+                $newCoin->long_name = $name;
+                $newCoin->save();
             }
         }
     }
