@@ -48,7 +48,7 @@ var myChart = new Chart(ctx, {
             }],
             xAxes: [{
                 ticks: {
-                    maxTicksLimit: 20,
+                    maxTicksLimit: 10,
                     source: 'labels'
                 },
                 distribution: 'series'
