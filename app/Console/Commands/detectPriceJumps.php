@@ -57,9 +57,9 @@ class detectPriceJumps extends Command
 
                 # What's the 5% margin we need to clear?
                 if ($highestPrice->price > 0) {
-                    $diff = priceJumpPercentage($lowestPrice->price, $highestPrice->price);
+                    $percentageJump = priceJumpPercentage($lowestPrice->price, $highestPrice->price);
 
-                    if ($diff) {
+                    if ($percentageJump) {
                         # Did the price go up or down?
                         if ($lowestPrice->created_at > $highestPrice->created_at) {
                             # Price went down
@@ -71,8 +71,8 @@ class detectPriceJumps extends Command
                             $price_to = $highestPrice->price;
                         }
 
-                        if ($diff > 110 || $diff < 90) {
-                            # New peak! Did we already save this one? We only want one an hour!
+                        if ($percentageJump > 10 || $percentageJump < -10) {
+                            # New jump! Did we already save this one? We only want one an hour!
                             $pricejumps = Pricejump::where('created_at', '>=', $timestamp)->first();
 
                             if ($pricejumps == null) {

@@ -69,6 +69,7 @@ class HomepageController extends Controller
         // Get all prices from 3hrs before and 3hrs after the event
         $timestampBefore = $pricejump->created_at->copy()->subHours(3);
         $timestampAfter = $pricejump->created_at->copy()->addHours(3);
+
         $values = Pricevalue::where('coin_id', $pricejump->coin_id)
                             ->where('created_at', '>=', $timestampBefore)
                             ->where('created_at', '<=', $timestampAfter)
