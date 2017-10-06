@@ -32,12 +32,12 @@ class pricejump extends Model
 
     public function getPriceToReadable()
     {
-        return sprintf('%s%s', $this->currency->symbol, number_format($this->price_to, 4));
+        return sprintf('%s%s', $this->currency->symbol, number_format($this->price_to, 6));
     }
 
     public function getPriceFromReadable()
     {
-        return sprintf('%s%s', $this->currency->symbol, number_format($this->price_from, 4));
+        return sprintf('%s%s', $this->currency->symbol, number_format($this->price_from, 6));
     }
 
     public function getPriceDirection()

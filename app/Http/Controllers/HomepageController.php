@@ -58,8 +58,8 @@ class HomepageController extends Controller
 
         return view('homepage', [
             'pricevalues' => $values,
-            'minPrice' => round($minPrice, 2),
-            'maxPrice' => round($maxPrice, 2),
+            'minPrice' => round($minPrice, 6),
+            'maxPrice' => round($maxPrice, 6),
             'recentPriceJumps' => $recentPricejumps,
             'coinCount' => $coinCount,
         ]);
@@ -99,8 +99,8 @@ class HomepageController extends Controller
 
         return view('event.show', [
             'pricevalues' => $values,
-            'minPrice' => round($minPrice, 2),
-            'maxPrice' => round($maxPrice, 2),
+            'minPrice' => round($minPrice, 6),
+            'maxPrice' => round($maxPrice, 6),
             'pricejump' => $pricejump,
         ]);
     }
