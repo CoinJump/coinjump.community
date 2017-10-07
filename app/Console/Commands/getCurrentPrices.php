@@ -33,25 +33,34 @@ class getCurrentPrices extends Command
      */
     public function handle()
     {
-        # Get all coins
-        $coins = Coin::all();
+        // Get pricing data
+        $apiEndpoint = 'https://api.coinmarketcap.com/v1/ticker/';
+        $json = fetchJson($apiEndpoint);
 
-        # For now, only deal with USD
+        // For now, only deal with USD
         $usd = Currency::where('name', 'USD')->first();
 
-        foreach ($coins as $coin) {
-            $coinLowerCased = strtolower($coin->name);
-            $apiEndpoint = "https://coinbin.org/". $coinLowerCased;
+        // Loop all coins from CoinMarketCap
+        foreach ($json as $coin) {
+            $symbol = strtoupper($coin['symbol']);
+            $name = $coin['name'];
 
-            # Fetch the current price from API
-            $json = fetchJson($apiEndpoint);
-            $data = $json['coin'];
+            // Does it already exist?
+            $existingCoin = Coin::where('name', $symbol)->first();
+            if (!is_a($existingCoin, 'App\Coin')) {
+                $newCoin = new Coin();
+                $newCoin->name = $symbol;
+                $newCoin->long_name = $name;
+                $newCoin->save();
 
-            # Store price in DB
+                $existingCoin = $newCoin->refresh();
+            }
+
+            // Save the latest price
             $value = new Pricevalue();
-            $value->price = $data['usd'];
+            $value->price = $coin['price_usd'];
             $value->currency_id = $usd->id;
-            $value->coin_id = $coin->id;
+            $value->coin_id = $existingCoin->id;
             $value->save();
         }
     }

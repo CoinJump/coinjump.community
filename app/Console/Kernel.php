@@ -15,7 +15,6 @@ class Kernel extends ConsoleKernel
     protected $commands = [
         \App\Console\Commands\getCurrentPrices::class,
         \App\Console\Commands\detectPriceJumps::class,
-        \App\Console\Commands\updateAvailableCoins::class,
     ];
 
     /**
@@ -26,9 +25,8 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-        $schedule->command('coin:get-prices')->everyTenMinutes();
-        $schedule->command('coin:detect-price-jumps')->everyTenMinutes();
-        $schedule->command('coin:get-new-coins')->daily();
+        $schedule->command('coin:get-prices')->everyFiveMinutes();
+        $schedule->command('coin:detect-price-jumps')->everyFiveMinutes();
     }
 
     /**
