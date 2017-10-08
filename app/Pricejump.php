@@ -59,7 +59,7 @@ class pricejump extends Model
 
     public function getPermalink()
     {
-        return getenv('APP_URL') .'/event/'. $this->id;
+        return env('APP_URL') .'/event/'. $this->id;
     }
 
     public function getPermaidentifier()
