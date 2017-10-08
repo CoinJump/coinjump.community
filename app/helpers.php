@@ -23,4 +23,18 @@ function priceJumpPercentage($value1, $value2) {
         return false;
     }
 }
+
+function removeTrailingZeros ($value) {
+    $pieces = explode(".", $value);
+
+    if (array_key_exists(1, $pieces)) {
+        $decimals = floatval($pieces[1]);
+
+        if ($decimals > 0) {
+            return $pieces[0] .'.'. $decimals;
+        }
+    }
+
+    return $pieces[0];
+}
 ?>

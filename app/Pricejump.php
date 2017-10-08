@@ -35,7 +35,7 @@ class pricejump extends Model
         return sprintf(
                 '%s%s',
                 $this->currency->symbol,
-                number_format($this->price_to, 6) + 0 /* The +0 is a dirty hack to remove trailing 0's */
+                removeTrailingZeros(number_format($this->price_to, 6))
         );
     }
 
@@ -44,7 +44,7 @@ class pricejump extends Model
         return sprintf(
                 '%s%s',
                 $this->currency->symbol,
-                number_format($this->price_from, 6) + 0 /* The +0 is a dirty hack to remove trailing 0's */
+                removeTrailingZeros(number_format($this->price_from, 6))
         );
     }
 
