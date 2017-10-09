@@ -37,63 +37,60 @@ class detectPriceJumps extends Command
     {
         # Get all coins
         $coins = Coin::all();
-        $timestamp = new Carbon('3 hours ago');
+
+        # Detect 2 kinds of jumps: 24h price increases & sudden jumps in 3 hour timespans
+        $timestampShort = new Carbon('3 hours ago');
+        $timestampLong  = new Carbon('24 hours ago');
+
+        $timeranges = [ $timestampShort, $timestampLong ];
 
         foreach ($coins as $coin) {
             # For each coin, just check USD
             $currency = Currency::find(1)->where('name', 'USD')->first();
 
-            # A "jump" is defined as a 5% price change within the time range of an hour.
-            $latestPrices = $coin->value()
-                                ->where('currency_id', $currency->id)
-                                ->where('created_at', '>=', $timestamp)
-                                ->orderBy('price', 'ASC')
-                                ->get();
+            foreach ($timeranges as $timerange) {
+                # A "jump" is defined as a 10% price change within a specific timeframe.
+                $latestPrices = $coin->value()
+                                    ->where('currency_id', $currency->id)
+                                    ->where('created_at', '>=', $timerange)
+                                    ->orderBy('created_at', 'ASC')
+                                    ->get();
 
-            $lowestPrice = $latestPrices->first();
-            $highestPrice = $latestPrices->last();
+                $firstPrice = $latestPrices->first();
+                $lastPrice = $latestPrices->last();
 
-            if (is_a($lowestPrice, 'App\Pricevalue') && is_a($highestPrice, 'App\Pricevalue')) {
+                if (is_a($firstPrice, 'App\Pricevalue') && is_a($lastPrice, 'App\Pricevalue')) {
+                    # We can't divide by 0, check that
+                    if ($lastPrice->price > 0) {
+                        # How big was this jump?
+                        $percentageJump = priceJumpPercentage($firstPrice->price, $lastPrice->price);
 
-                # What's the 5% margin we need to clear?
-                if ($highestPrice->price > 0) {
-                    $percentageJump = priceJumpPercentage($lowestPrice->price, $highestPrice->price);
+                        if ($percentageJump) {
+                            # Did the price go up or down?
+                            if ($percentageJump > 10 || $percentageJump < -10) {
+                                # New jump! Did we already save this one? We only want one per timeframe!
+                                $pricejumps = Pricejump::where('created_at', '>=', $timerange)->first();
 
-                    if ($percentageJump) {
-                        # Did the price go up or down?
-                        if ($lowestPrice->created_at > $highestPrice->created_at) {
-                            # Price went down
-                            $price_from = $highestPrice->price;
-                            $price_to = $lowestPrice->price;
-                        } else {
-                            # Price went up
-                            $price_from = $lowestPrice->price;
-                            $price_to = $highestPrice->price;
-                        }
+                                if ($pricejumps == null) {
+                                    $pricejump = new Pricejump();
+                                    $pricejump->currency_id = $currency->id;
+                                    $pricejump->coin_id = $coin->id;
+                                    $pricejump->price_from = $firstPrice->price;
+                                    $pricejump->price_to = $lastPrice->price;
+                                    $pricejump->save();
 
-                        if ($percentageJump > 10 || $percentageJump < -10) {
-                            # New jump! Did we already save this one? We only want one an hour!
-                            $pricejumps = Pricejump::where('created_at', '>=', $timestamp)->first();
+                                    $pricejump = $pricejump->fresh();
 
-                            if ($pricejumps == null) {
-                                $pricejump = new Pricejump();
-                                $pricejump->currency_id = $currency->id;
-                                $pricejump->coin_id = $coin->id;
-                                $pricejump->price_from = $price_from;
-                                $pricejump->price_to = $price_to;
-                                $pricejump->save();
+                                    $tweet = $coin->long_name .' ($'. $coin->name .'): '. $pricejump->getPercentage() .'% '. $pricejump->getPriceDirection() .' (from '. $pricejump->getPriceFromReadable() .' to '. $pricejump->getPriceToReadable() .') http://coinjump.community/event/'. $pricejump->id;
 
-                                $pricejump = $pricejump->fresh();
-
-                                $tweet = $coin->long_name .' ($'. $coin->name .'): '. $pricejump->getPercentage() .'% '. $pricejump->getPriceDirection() .' (from '. $pricejump->getPriceFromReadable() .' to '. $pricejump->getPriceToReadable() .') http://coinjump.community/event/'. $pricejump->id;
-
-                                # Post this jump on Twitter
-                                /* \Twitter::postTweet(
-                                    array(
-                                        'status' => $tweet,
-                                        'format' => 'json'
-                                    )
-                                ); */
+                                    # Post this jump on Twitter
+                                    /* \Twitter::postTweet(
+                                        array(
+                                            'status' => $tweet,
+                                            'format' => 'json'
+                                        )
+                                    ); */
+                                }
                             }
                         }
                     }
