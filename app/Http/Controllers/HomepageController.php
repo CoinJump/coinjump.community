@@ -53,8 +53,8 @@ class HomepageController extends Controller
             }
         }
 
-        // Get the latest 5 price jumps to show on the homepage
-        $recentPricejumps = Pricejump::orderBy('created_at', 'DESC')->limit(5)->get();
+        // Get the latest 10 price jumps to show on the homepage
+        $recentPricejumps = Pricejump::orderBy('created_at', 'DESC')->limit(10)->get();
 
         return view('homepage', [
             'pricevalues' => $values,

@@ -38,9 +38,11 @@ class detectPriceJumps extends Command
         # Get all coins
         $coins = Coin::all();
 
-        # Detect 2 kinds of jumps: 24h price increases & sudden jumps in 3 hour timespans
-        $timestampShort = new Carbon('3 hours ago');
-        $timestampLong  = new Carbon('24 hours ago');
+        # Detect 2 kinds of jumps:
+        # - 24h price increases
+        # - 7d price increases
+        $timestampShort = new Carbon('24 hours ago');
+        $timestampLong  = new Carbon('7 days ago');
 
         $timeranges = [ $timestampShort, $timestampLong ];
 
@@ -81,15 +83,15 @@ class detectPriceJumps extends Command
 
                                     $pricejump = $pricejump->fresh();
 
-                                    $tweet = $coin->long_name .' ($'. $coin->name .'): '. $pricejump->getPercentage() .'% '. $pricejump->getPriceDirection() .' (from '. $pricejump->getPriceFromReadable() .' to '. $pricejump->getPriceToReadable() .') http://coinjump.community/event/'. $pricejump->id;
+                                    $tweet = $coin->long_name .' ($'. $coin->name .'): '. $pricejump->getPercentage() .'% '. $pricejump->getPriceDirection() .' (from '. $pricejump->getPriceFromReadable() .' to '. $pricejump->getPriceToReadable() .') '. $pricejump->getPermalink();
 
                                     # Post this jump on Twitter
-                                    /* \Twitter::postTweet(
+                                    \Twitter::postTweet(
                                         array(
                                             'status' => $tweet,
                                             'format' => 'json'
                                         )
-                                    ); */
+                                    );
                                 }
                             }
                         }

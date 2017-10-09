@@ -28,7 +28,7 @@ function removeTrailingZeros ($value) {
     $pieces = explode(".", $value);
 
     if (array_key_exists(1, $pieces)) {
-        $decimals = floatval($pieces[1]);
+        $decimals = floatval('0.'. $pieces[1]);
 
         if ($decimals > 0) {
             return $pieces[0] .'.'. $decimals;
