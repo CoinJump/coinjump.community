@@ -1,4 +1,4 @@
-<canvas id="myChart" style="width: 75%; height: 20%"></canvas>
+<canvas id="myChart" style="width: 75%; height: 250px"></canvas>
 <script>
 var ctx = document.getElementById("myChart").getContext('2d');
 var myChart = new Chart(ctx, {
@@ -35,7 +35,7 @@ var myChart = new Chart(ctx, {
     },
     options: {
         responsive: true,
-        maintainAspectRatio: false,
+        maintainAspectRatio: true,
         scales: {
             yAxes: [{
                 ticks: {

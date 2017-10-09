@@ -64,11 +64,6 @@
 
               @endforeach
           </ul>
-
-
-          <p>
-              <small>A "jump" is defined as a 10% price change within the time range of 3 hours.</small>
-          </p>
       </div>
 
       <footer class="footer">
