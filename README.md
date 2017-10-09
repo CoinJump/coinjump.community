@@ -4,6 +4,8 @@
 
 A community site, built in [Laravel](https://laravel.com/), to track & explain sudden crypto currency price jumps. The goal is to determine the root cause(s) of each jump, so we can learn from those events.
 
+Get the online version here: [coinjump.community](http://coinjump.community).
+
 ## Running CoinJump
 
 It's a Laravel (PHP) based application, after a fork you'll need;
