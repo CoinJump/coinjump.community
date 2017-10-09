@@ -31,7 +31,7 @@ function removeTrailingZeros ($value) {
         $decimals = floatval('0.'. $pieces[1]);
 
         if ($decimals > 0) {
-            return $pieces[0] .'.'. $decimals;
+            return $pieces[0] + $decimals;
         }
     }
 

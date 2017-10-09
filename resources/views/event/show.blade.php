@@ -34,7 +34,11 @@
 
       <div class="row">
           <h2>
-              {{ $pricejump->coin->name }}: from {{ $pricejump->getPriceFromReadable() }} to {{ $pricejump->getPriceToReadable() }} ({{ $pricejump->getPercentage() }}% {{ $pricejump->getPriceDirection() }}) at {{ $pricejump->created_at }} UTC
+            {{ $pricejump->coin->long_name }} (${{ $pricejump->coin->name }}): {{ $pricejump->getPercentage() }}% {{ $pricejump->getPriceDirection() }} in {{ $pricejump->timeframe }} hours
+          </h2>
+
+          <h3>
+            From {{ $pricejump->getPriceFromReadable() }} to {{ $pricejump->getPriceToReadable() }} at {{ $pricejump->created_at }} UTC
           </h2>
 
           @include('includes.chart', [
