@@ -75,7 +75,10 @@
 
       <footer class="footer">
           <hr />
-          <p class="text-center">Provided to you by <a href="https://ma.ttias.be">Mattias Geniar</a> - <a href="https://twitter.com/mattiasgeniar">@mattiasgeniar</a></p>
+          <p class="text-center">
+              <a href="https://twitter.com/coinjumpapp">@CoinJumpApp</a> -
+              Provided to you by <a href="https://ma.ttias.be">Mattias Geniar</a> - <a href="https://twitter.com/mattiasgeniar">@mattiasgeniar</a>
+          </p>
       </footer>
 
     </div> <!-- /container -->
