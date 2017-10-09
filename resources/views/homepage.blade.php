@@ -42,6 +42,9 @@
         <p>
             We're now tracking the {{ $coinCount }} most valuable coins.
         </p>
+        <p>
+            <em>Want to help out? This project is <a href="https://github.com/CoinJump/coinjump.community">available on Github</a> and can use your help!</em>
+        </p>
       </div>
 
       <div class="row">
