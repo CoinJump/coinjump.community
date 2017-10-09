@@ -51,7 +51,7 @@ class detectPriceJumps extends Command
             $currency = Currency::find(1)->where('name', 'USD')->first();
 
             foreach ($hoursAgo as $hourAgo) {
-                $timerange = new Carbon($hoursAgo .' hours ago');
+                $timerange = new Carbon($hourAgo .' hours ago');
 
                 # A "jump" is defined as a 10% price change within a specific timeframe.
                 $latestPrices = $coin->value()
