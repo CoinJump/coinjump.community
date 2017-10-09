@@ -11,19 +11,18 @@ It's a Laravel (PHP) based application, after a fork you'll need;
 A fresh database with some basic info;
 
 ```
-$ php artisan migrate:refresh --seed
+$ php artisan migrate:fresh --seed
 ```
 
-The Laravel scheduler to fetch all available coins, get their prices & detect price jumps.
+The Laravel scheduler to fetch all available coins, get their prices & detect price jumps. Run this every minute.
 
 ```
 $ php artisan schedule:run
 ```
 
-If you'd prefer to run the schedule manually, it involves these 3 tasks. Run these in this order too, to first fetch all available coins, update their prices & detect price jumps.
+If you'd prefer to run the schedule manually, it involves these 2 tasks. Run these in this order too, to first fetch all available coins & update their prices. The second to detect price jumps.
 
 ```
-$ php artisan coin:get-new-coins
 $ php artisan coin:get-prices
 $ php artisan coin:detect-price-jumps
 ```
