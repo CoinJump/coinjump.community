@@ -41,16 +41,18 @@ class detectPriceJumps extends Command
         # Detect 2 kinds of jumps:
         # - 24h price increases
         # - 7d price increases
-        $timestampShort = new Carbon('24 hours ago');
-        $timestampLong  = new Carbon('7 days ago');
+        $timestampShort = 24; // 24h
+        $timestampLong  = 168; // 168h = 7d
 
-        $timeranges = [ $timestampShort, $timestampLong ];
+        $hoursAgo = [ $timestampShort, $timestampLong ];
 
         foreach ($coins as $coin) {
             # For each coin, just check USD
             $currency = Currency::find(1)->where('name', 'USD')->first();
 
-            foreach ($timeranges as $timerange) {
+            foreach ($hoursAgo as $hourAgo) {
+                $timerange = new Carbon($hoursAgo .' hours ago');
+
                 # A "jump" is defined as a 10% price change within a specific timeframe.
                 $latestPrices = $coin->value()
                                     ->where('currency_id', $currency->id)
@@ -79,6 +81,7 @@ class detectPriceJumps extends Command
                                     $pricejump->coin_id = $coin->id;
                                     $pricejump->price_from = $firstPrice->price;
                                     $pricejump->price_to = $lastPrice->price;
+                                    $pricejump->timeframe = $hourAgo;
                                     $pricejump->save();
 
                                     $pricejump = $pricejump->fresh();
