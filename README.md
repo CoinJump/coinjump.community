@@ -29,4 +29,4 @@ $ php artisan coin:get-prices
 $ php artisan coin:detect-price-jumps
 ```
 
-From then on, prices are fetched every 10 minutes and graphed on the homepage.
+From then on, prices are fetched every 5 minutes and graphed on the homepage.
