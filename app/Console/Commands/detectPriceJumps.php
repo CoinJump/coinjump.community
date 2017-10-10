@@ -73,7 +73,9 @@ class detectPriceJumps extends Command
                             # Did the price go up or down?
                             if ($percentageJump > 10 || $percentageJump < -10) {
                                 # New jump! Did we already save this one? We only want one per timeframe!
-                                $pricejumps = Pricejump::where('created_at', '>=', $timerange)->first();
+                                $pricejumps = Pricejump::where('created_at', '>=', $timerange)
+                                                        ->where('coin_id', $coin->id)
+                                                        ->first();
 
                                 if ($pricejumps == null) {
                                     $pricejump = new Pricejump();
@@ -89,13 +91,25 @@ class detectPriceJumps extends Command
                                     $tweet = $coin->long_name .' ($'. $coin->name .'): '. $pricejump->getPercentage() .'% '. $pricejump->getPriceDirection() .' (from '. $pricejump->getPriceFromReadable() .' to '. $pricejump->getPriceToReadable() .') '. $pricejump->getPermalink();
 
                                     # Post this jump on Twitter
-                                    \Twitter::postTweet(
-                                        array(
-                                            'status' => $tweet,
-                                            'format' => 'json'
-                                        )
-                                    );
+                                    if (app()->environment('production')) {
+                                        \Twitter::postTweet(
+                                            array(
+                                                'status' => $tweet,
+                                                'format' => 'json'
+                                            )
+                                        );
+                                    } else {
+                                        $this->info('Would have posted to Twitter, but this isn\'t production.');
+                                        $this->info('Tweet:');
+                                        $this->info($tweet);
+                                    }
+                                } else {
+                                    $this->line($coin->name .': '. $percentageJump .'% change, from '. $firstPrice->price .' to '. $lastPrice->price);
+                                    $this->info('-> not saving pricejump, latest pricejump was within '. $hourAgo .'h');
+                                    $this->info($pricejumps->coin->name .' '.$pricejumps->getPercentage() .'% at '. $pricejumps->created_at );
                                 }
+                            } else {
+                                $this->line($coin->name .': '. $percentageJump .'% change, from '. $firstPrice->price .' to '. $lastPrice->price);
                             }
                         }
                     }
