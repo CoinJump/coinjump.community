@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "23cc9a217a47bc46036bf4fd4d8a0c8d",
+    "content-hash": "4cb193873509bea5544476a80357b41a",
     "packages": [
         {
             "name": "dnoegel/php-xdg-base-dir",
@@ -1759,6 +1759,62 @@
                 "spatie"
             ],
             "time": "2017-10-01T21:48:19+00:00"
+        },
+        {
+            "name": "spatie/laravel-tail",
+            "version": "2.0.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/spatie/laravel-tail.git",
+                "reference": "e89a850c753d807061fb76194a99d4570f233566"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/spatie/laravel-tail/zipball/e89a850c753d807061fb76194a99d4570f233566",
+                "reference": "e89a850c753d807061fb76194a99d4570f233566",
+                "shasum": ""
+            },
+            "require": {
+                "illuminate/console": "~5.5.0",
+                "illuminate/support": "~5.5.0",
+                "php": "^7.0",
+                "symfony/process": "^3.3"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "Spatie\\Tail\\TailServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Spatie\\Tail\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Freek Van der Herten",
+                    "email": "freek@spatie.be",
+                    "homepage": "https://murze.be",
+                    "role": "Developer"
+                }
+            ],
+            "description": "Easily tail the application log",
+            "homepage": "https://github.com/spatie/laravel-tail",
+            "keywords": [
+                "development",
+                "laravel",
+                "laravel-tail",
+                "log",
+                "tail"
+            ],
+            "time": "2017-08-30T15:06:57+00:00"
         },
         {
             "name": "spatie/temporary-directory",
