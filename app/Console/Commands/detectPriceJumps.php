@@ -53,7 +53,7 @@ class detectPriceJumps extends Command
             foreach ($hoursAgo as $hourAgo) {
                 $timerange = new Carbon($hourAgo .' hours ago');
 
-                # A "jump" is defined as a 10% price change within a specific timeframe.
+                # A "jump" is defined as a 100% price change within a specific timeframe.
                 $latestPrices = $coin->value()
                                     ->where('currency_id', $currency->id)
                                     ->where('created_at', '>=', $timerange)
@@ -71,7 +71,7 @@ class detectPriceJumps extends Command
 
                         if ($percentageJump) {
                             # Did the price go up or down?
-                            if ($percentageJump > 10 || $percentageJump < -10) {
+                            if ($percentageJump > 100 || $percentageJump < -100) {
                                 # New jump! Did we already save this one? We only want one per timeframe!
                                 $pricejumps = Pricejump::where('created_at', '>=', $timerange)
                                                         ->where('coin_id', $coin->id)
