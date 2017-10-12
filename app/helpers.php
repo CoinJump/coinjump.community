@@ -18,7 +18,7 @@ function priceJumpPercentage($value1, $value2) {
     $fullValue2 = $value2 * $multiplier;
 
     if ($value2 != 0) {
-        return 100 - round($fullValue1 / $fullValue2 * 100, 2);
+        return round(($fullValue2-$fullValue1)/$fullValue1*100, 2);
     } else {
         return false;
     }
